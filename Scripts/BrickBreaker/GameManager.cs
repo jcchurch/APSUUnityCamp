@@ -5,19 +5,13 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class GM : MonoBehaviour {
+public class GameManager : MonoBehaviour {
 
-    public GameObject glove;
-    public GameObject bunny;
-    public Text message;
+    public static GameManager instance = null;
+    private GameObject clonePaddle;
 
-    private int lives;
-    private int points;
-
-    public static GM instance = null;
-
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {	
         if (instance == null)
         {
             instance = this;
@@ -28,6 +22,11 @@ public class GM : MonoBehaviour {
         }
 
         Setup();
-    }
+	}
 
+    private void Setup()
+    {
+        this.clonePaddle = Instantiate(paddle, transform.position, Quaternion.identity) as GameObject;
+        Instantiate(bricksPrefab, transform.position, Quaternion.identity);
+    }
 }
