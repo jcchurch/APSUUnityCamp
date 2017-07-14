@@ -31,3 +31,8 @@ public class Slender : MonoBehaviour {
 		Invoke ("JumpToRandomPosition", 20f);
 	}
 }
+
+/*
+Slender is 2M tall, has a head, torso, and 2 legs, and 2 eyes that light up.
+I added a collider. Didn't use it.
+*/
