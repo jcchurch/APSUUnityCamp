@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour {
 	private Gem first;
 	private int score;
 
-	public static GM instance = null;
+	public static GameManager instance = null;
 
     // Use this for initialization
     void Start () {
