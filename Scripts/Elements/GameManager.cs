@@ -5,9 +5,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class GM : MonoBehaviour {
+public class GameManager : MonoBehaviour {
 
-    public static GM instance = null;
+    public static GameManager instance = null;
 
     // Use this for initialization
     void Start () {
