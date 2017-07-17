@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class GM : MonoBehaviour {
+public class GameManager : MonoBehaviour {
 
   public Gem red;
 	public Gem black;
