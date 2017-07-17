@@ -13,7 +13,7 @@ public class Gem : MonoBehaviour {
 	}
 
 	void OnMouseDown() {
-		GM.instance.SetGem (this);
+		GameManager.instance.SetGem (this);
 	}
 
 	// Update is called once per frame
@@ -22,8 +22,6 @@ public class Gem : MonoBehaviour {
 			CheckForCrush ();
 			CheckForEmptySouthThenDrop ();
 		}
-
-		CheckForEmptyTopThenSpawn ();
 		transform.position = Vector3.MoveTowards (transform.position, destination, speed * Time.deltaTime);
 	}
 
@@ -31,13 +29,6 @@ public class Gem : MonoBehaviour {
 	{
 		if (transform.position.y > -3f && transform.position.y < 5 && getSouthGem () == null) {
 			destination = new Vector3 (transform.position.x, transform.position.y - 2);
-		}
-	}
-
-	void CheckForEmptyTopThenSpawn ()
-	{
-		if (transform.position.y == 5 && getSouthGem () == null) {
-			GM.instance.placeGem (transform.position.x, transform.position.y - 2);
 		}
 	}
 
@@ -51,15 +42,19 @@ public class Gem : MonoBehaviour {
 			Destroy (north.gameObject);
 			Destroy (south.gameObject);
 			Destroy (gameObject);
-			GM.instance.ScorePoints (100);
+			GameManager.instance.ScorePoints (100);
 		}
 
 		if (east != null && west != null && east.gameObject.tag == gameObject.tag && west.gameObject.tag == gameObject.tag) {
 			Destroy (east.gameObject);
 			Destroy (west.gameObject);
 			Destroy (gameObject);
-			GM.instance.ScorePoints (100);
+			GameManager.instance.ScorePoints (100);
 		}
+	}
+	
+	public void SetPosition(Vector3 here) {
+		destination = here;
 	}
 
 	private Collider getNorthGem() {
@@ -84,9 +79,5 @@ public class Gem : MonoBehaviour {
 			return gem [0];
 		}
 		return null;
-	}
-
-	public void SetPosition(Vector3 here) {
-		destination = here;
 	}
 }
