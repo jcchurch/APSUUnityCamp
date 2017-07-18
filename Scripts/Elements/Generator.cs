@@ -6,9 +6,6 @@ public class Generator : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if (getSouthGem () == null) {
-			GameManager.instance.placeGem (transform.position.x, transform.position.y - 2);
-		}
 	}
 
 	private Collider getSouthGem() {
