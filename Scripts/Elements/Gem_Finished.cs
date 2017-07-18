@@ -12,6 +12,10 @@ public class Gem : MonoBehaviour {
 		destination = transform.position;
 	}
 
+	public void SetPosition(Vector3 here) {
+		destination = here;
+	}
+	
 	void OnMouseDown() {
 		GameManager.instance.SetGem (this);
 	}
@@ -22,12 +26,13 @@ public class Gem : MonoBehaviour {
 			CheckForCrush ();
 			CheckForEmptySouthThenDrop ();
 		}
+
 		transform.position = Vector3.MoveTowards (transform.position, destination, speed * Time.deltaTime);
 	}
 
 	void CheckForEmptySouthThenDrop()
 	{
-		if (transform.position.y > -3f && transform.position.y < 5 && getSouthGem () == null) {
+		if (getSouthGem () == null) {
 			destination = new Vector3 (transform.position.x, transform.position.y - 2);
 		}
 	}
@@ -51,10 +56,6 @@ public class Gem : MonoBehaviour {
 			Destroy (gameObject);
 			GameManager.instance.ScorePoints (100);
 		}
-	}
-	
-	public void SetPosition(Vector3 here) {
-		destination = here;
 	}
 
 	private Collider getNorthGem() {
