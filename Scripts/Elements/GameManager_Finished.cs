@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,12 +6,12 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 
-  public Gem red;
+    public Gem red;
 	public Gem black;
 	public Gem green;
 	public Gem blue;
 	public Gem pink;
-	public Gem empty;
+	public Generator generator;
 	public Text message;
 	public int movesLeft;
 
@@ -33,7 +32,7 @@ public class GameManager : MonoBehaviour {
 		}
 
 		for (float x = -4; x <= 4; x += 2) {
-			Instantiate(empty, new Vector3(x, 5f), Quaternion.identity);
+			Instantiate(generator, new Vector3(x, 5f), Quaternion.identity);
 		}
 
 		score = 0;
@@ -41,26 +40,8 @@ public class GameManager : MonoBehaviour {
 
 	public void placeGem(float x, float y)
     {
-        int gem = UnityEngine.Random.Range(0, 5);
-		Gem toPlace = red;
-        if (gem == 1)
-        {
-            toPlace = black;
-        }
-        else if (gem == 2)
-        {
-            toPlace = green;
-        }
-        else if (gem == 3)
-        {
-            toPlace = blue;
-        }
-        else if (gem == 4)
-        {
-            toPlace = pink;
-        }
-
-		Instantiate(toPlace, new Vector3(x, y), Quaternion.identity);
+		var gemList = new List<Gem>{ red, black, green, blue, pink };
+		Instantiate(gemList[Random.Range(0,gemList.Count)], new Vector3(x, y), Quaternion.identity);
     }
 
 	public void SetGem(Gem gem) {
@@ -78,9 +59,7 @@ public class GameManager : MonoBehaviour {
 				first.SetPosition (secondLocal);
 				gem.SetPosition (firstLocal);
 				movesLeft--;
-				GM.instance.ScorePoints (-50);
-			} else {
-				print ("Elements are not neighbors.");
+				GameManager.instance.ScorePoints (-50);
 			}
 
 			first = null;
