@@ -6,11 +6,6 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 
-    public Gem red;
-	public Gem black;
-	public Gem green;
-	public Gem blue;
-	public Gem pink;
 	public Generator generator;
 	public Text message;
 	public int movesLeft;
@@ -37,12 +32,6 @@ public class GameManager : MonoBehaviour {
 
 		score = 0;
 	}
-
-	public void placeGem(float x, float y)
-    {
-		var gemList = new List<Gem>{ red, black, green, blue, pink };
-		Instantiate(gemList[Random.Range(0,gemList.Count)], new Vector3(x, y), Quaternion.identity);
-    }
 
 	public void SetGem(Gem gem) {
 
