@@ -2,12 +2,14 @@
 This is a game in the style of Candy Crush or Bejeweled.
 
 
-
 ## Steps
 - Create a 2D environment.
 - Go to the Asset Store and download a free icon package. I recommend 100 free alchemy icons.
 - Create a new Empty Object named “GameManager”.
   - Start the script off with this.
+
+Code.
+
     using System;
     using System.Collections;
     using System.Collections.Generic;
@@ -44,6 +46,9 @@ This is a game in the style of Candy Crush or Bejeweled.
 - Set score to 0 in the `Start` method.
     score = 0;
 - Add a method to update the score.
+
+Code.
+
             public void ScorePoints(int howmany) {
                     score = score + howmany;
                     message.text = "Score: " + score + " Moves Left: "+movesLeft;
@@ -55,12 +60,15 @@ This is a game in the style of Candy Crush or Bejeweled.
             }
 - Pull 5 different sprites into the game.
   - Give them each a different tag.
-  - Give them each a BoxCollider (make sure it’s not a BoxCollider2D).
+  - Give them each a **BoxCollider** (make sure it’s not a **BoxCollider2D**).
   - Create a C# Script named Gem.cs, associate the script with each Gem and drop in this code.
+
+Code.
+
     using System.Collections;
     using System.Collections.Generic;
     using UnityEngine;
-    
+
     public class Gem : MonoBehaviour {
     
             // Use this for initialization
@@ -95,34 +103,60 @@ This is a game in the style of Candy Crush or Bejeweled.
                     return null;
             }
     }
+
 - Give each Gem a speed an a destination.
+
+Code.
+
     private float speed = 5f;
     private Vector3 destination;
+
 - Set destination to the the current location.
+
+Code.
+
             void Start () {
                     destination = transform.position;
             }
+
 - Allow the outside world to update the destination.
+
+Code.
+
             public void SetPosition(Vector3 here) {
                     destination = here;
             }
+
 - Create a function for checking if anything exists below the gem.
+
+Code.
+
     void CheckForEmptySouthThenDrop()
-            {
-                    if (getSouthGem () == null) {
-                            destination = new Vector3 (transform.position.x, transform.position.y - 2);
-                    }
+    {
+            if (getSouthGem () == null) {
+                    destination = new Vector3 (transform.position.x, transform.position.y - 2);
             }
+    }
+
 - Add this function to the Update function, but only call it if we aren’t moving. Also, if we need to move, do so.
+
+
+Code.
+
     void Update () {
-                    if (destination == transform.position) {
-                            CheckForEmptySouthThenDrop ();
-                    }
-    
-                    transform.position = Vector3.MoveTowards (transform.position, destination, speed * Time.deltaTime);
+            if (destination == transform.position) {
+                    CheckForEmptySouthThenDrop ();
             }
+    
+            transform.position = Vector3.MoveTowards (transform.position, destination, speed * Time.deltaTime);
+    }
+
 - Return to **GameManager.cs**. Create a method called `SetGem` which will allow Gems to move.
-            public void SetGem(Gem gem) {
+
+
+Code.
+
+        public void SetGem(Gem gem) {
     
                     if (gem != null && first == null)
                     {
@@ -143,16 +177,26 @@ This is a game in the style of Candy Crush or Bejeweled.
                             first = null;
                     }
             }
+
+
 - Return to Gem.cs. Add a new method that allows the user to click on a Gem and call this method.
-            public void OnMouseDown() {
-                    GameManager.instance.SetGem (this);
-            }
+
+
+Code.
+
+    public void OnMouseDown() {
+        GameManager.instance.SetGem (this);
+    }
+    
 - Test your game.
 - Make a Prefabs folder.
 - Move all of your Gems into a Prefabs folder.
 - Create a new empty object in your game. This will be a Generator.
   - Name it “Generator”.
   - Dump this code.
+
+Code.
+  
     using System.Collections;
     using System.Collections.Generic;
     using UnityEngine;
@@ -175,13 +219,21 @@ This is a game in the style of Candy Crush or Bejeweled.
                     return null;
             }
     }
+
 - Modify the code to give it some gems to generate.
-            public Gem red;
-            public Gem black;
-            public Gem green;
-            public Gem blue;
-            public Gem pink;
+
+Code.
+
+     public Gem red;
+     public Gem black;
+     public Gem green;
+     public Gem blue;
+     public Gem pink;
+
 - Modify Update to look south. If nothing is there, place a gem.
+
+Code.
+
     void Update() {
         if (getSouthGem () == null) {
             float x = transform.position.x;
@@ -190,34 +242,41 @@ This is a game in the style of Candy Crush or Bejeweled.
             Instantiate(gemList[Random.Range(0,gemList.Count)], new Vector3(x, y), Quaternion.identity);
         }
     }
+
 - Associate your five gems with the Generator.
 - Move your Generator into the Prefabs folder.
 - Move your Generator from Prefabs into the Generator field in **GameManager**.
 - Return to **GameManager.cs**. Add this to the Update method, under the else-if statement in Start method.
+
+Code.
+
     for (float x = -4; x <= 4; x += 2) {
         Instantiate(generator, new Vector3(x, 5f), Quaternion.identity);
     }
+ 
 - Let’s check for gem crushes. Add this to your **Gem** code.
+    
+Code.
+    
     private void CheckForCrush() {
-                    Collider north = getNorthGem ();
-                    Collider south = getSouthGem ();
-                    Collider east = getEastGem ();
-                    Collider west = getWestGem ();
+        Collider north = getNorthGem ();
+        Collider south = getSouthGem ();
+        Collider east = getEastGem ();
+        Collider west = getWestGem ();
     
-                    if (north != null && south != null && north.gameObject.tag == gameObject.tag && south.gameObject.tag == gameObject.tag) {
-                            Destroy (north.gameObject);
-                            Destroy (south.gameObject);
-                            Destroy (gameObject);
-                            GameManager.instance.ScorePoints (100);
-                    }
+        if (north != null && south != null && north.gameObject.tag == gameObject.tag && south.gameObject.tag == gameObject.tag) {
+            Destroy (north.gameObject);
+            Destroy (south.gameObject);
+            Destroy (gameObject);
+            GameManager.instance.ScorePoints (100);
+        }
     
-                    if (east != null && west != null && east.gameObject.tag == gameObject.tag && west.gameObject.tag == gameObject.tag) {
-                            Destroy (east.gameObject);
-                            Destroy (west.gameObject);
-                            Destroy (gameObject);
-                            GameManager.instance.ScorePoints (100);
-                    }
-            }
+        if (east != null && west != null && east.gameObject.tag == gameObject.tag && west.gameObject.tag == gameObject.tag) {
+            Destroy (east.gameObject);
+            Destroy (west.gameObject);
+            Destroy (gameObject);
+            GameManager.instance.ScorePoints (100);
+        }
+    }
 
 I think we are done.
-
