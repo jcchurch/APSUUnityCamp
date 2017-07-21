@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class GM : MonoBehaviour {
+public class GameManager : MonoBehaviour {
 
     public GameObject glove;
     public GameObject bunny;
@@ -14,7 +14,7 @@ public class GM : MonoBehaviour {
     private int lives;
     private int points;
 
-    public static GM instance = null;
+    public static GameManager instance = null;
 
 	// Use this for initialization
 	void Start () {
