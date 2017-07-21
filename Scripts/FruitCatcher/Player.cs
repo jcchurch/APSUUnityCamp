@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Player : MonoBehaviour {
 
-    public GM GM;
 	public float speed;
 
 	// Use this for initialization
@@ -22,11 +21,11 @@ public class Player : MonoBehaviour {
     {
         if (other.gameObject.tag == "Fruit")
         {
-            GM.instance.GainPoints(1);
+            GameManager.instance.GainPoints(1);
         }
         else if (other.gameObject.tag == "Potato")
         {
-            GM.instance.LoseLife();
+            GameManager.instance.LoseLife();
         }
     }
 }
