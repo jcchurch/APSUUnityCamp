@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour {
 
     public static GameManager instance = null;
     private GameObject clonePaddle;
+    public GameObject bricksPrefab;
 
     // Use this for initialization
     void Start () {	
@@ -22,7 +23,7 @@ public class GameManager : MonoBehaviour {
         }
 
         Setup();
-	}
+    }
 
     private void Setup()
     {
