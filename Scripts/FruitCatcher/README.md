@@ -34,6 +34,9 @@ Code.
             }
     }
 - Create the Bunny.
+
+Code.
+
     using System;
     using System.Collections;
     using System.Collections.Generic;
@@ -85,10 +88,12 @@ Code.
             Invoke("dropSomething", 3f);
         }
     }
+    
 - Put the apple and potato into the Prefabs folder.
 - Delete the apple and the potato from the scene.
 - Drag the apple and potato into the Script for the Bunny.
 - Let’s add the script for the Glove.
+- Make sure that your glove is a trigger!
 
 Code.
 
@@ -197,7 +202,7 @@ Code.
                     GameManager.instance.LoseLife();
                     Destroy(gameObject);
                 }
-- Make sure that your glove is a trigger!
+
 - Return to the Glove Script. Add this new method.
         void OnTriggerEnter2D(Collider2D other)
         {
