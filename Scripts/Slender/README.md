@@ -10,12 +10,13 @@
 - Add the character to the scene.
     - Tag it as Player.
     - Give it a flashlight.
+    - Make sure that the flashlight is a little off-center.
     - Give the flashlight the flashlight cookie.
 - Add some variables.
 
 Code.
 
-  	public Text message;
+    public Text message;
     public int numberOfPages = 8;
     
 - Add some code to `Start`.
@@ -27,7 +28,6 @@ Code.
 - Create some methods to the Character.
 
 Code.
-
 
 		void Reset() {
 			UnityEngine.SceneManagement.SceneManager.LoadScene (0);
