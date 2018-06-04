@@ -15,13 +15,7 @@ We are all glad that you are here!
 
 ## Who are we? 
 
-- Instructor:
-    - James Church
-- Camp Programming Experts:
-    - Jacob Horstman
-    - Mikayla Webber
-    - Ethan Shircel
-    - Bridget Cloud
+We will introduce ourselves.
 
 ## Why are we here?
 
