@@ -204,8 +204,10 @@ Code.
                 }
 
 - Return to the Glove Script. Add this new method.
-        void OnTriggerEnter2D(Collider2D other)
-        {
+
+Code.
+
+        void OnTriggerEnter2D(Collider2D other) {
             if (other.gameObject.tag == "Fruit")
             {
                 GameManager.instance.GainPoints(1);
@@ -215,5 +217,6 @@ Code.
                 GameManager.instance.LoseLife();
             }
         }
+        
 - Play the game.
 
