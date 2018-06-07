@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -26,19 +27,19 @@ public class Gem : MonoBehaviour {
 		float x = transform.position.x;
 		float y = transform.position.y;
 
-		GameObject north = GetGem (x, y + 1);
-		GameObject south = GetGem (x, y - 1);
-		GameObject east = GetGem (x + 1, y);
-		GameObject west = GetGem (x - 1, y);
+		Collider north = GetGem (x, y + 1);
+		Collider south = GetGem (x, y - 1);
+		Collider east = GetGem (x + 1, y);
+		Collider west = GetGem (x - 1, y);
 
-		if (north != null && south != null && gameObject.tag == north.gameObject.tag && gameObject.tag == south.gameObject.tag) {
+		if (north != null && south != null && gameObject.tag == north.tag && gameObject.tag == south.tag) {
 			Destroy (north.gameObject);
 			Destroy (south.gameObject);
 			Destroy (gameObject);
 			GameManager.instance.ScorePoints (100);
 		}
 
-		if (east != null && west != null && gameObject.tag == east.gameObject.tag && gameObject.tag == west.gameObject.tag) {
+		if (east != null && west != null && gameObject.tag == east.tag && gameObject.tag == west.tag) {
 			Destroy (east.gameObject);
 			Destroy (west.gameObject);
 			Destroy (gameObject);
@@ -46,7 +47,7 @@ public class Gem : MonoBehaviour {
 		}
 	}
 
-	private GameObject GetGem(float x, float y) {
+	private Collider GetGem(float x, float y) {
 		Vector3 here = new Vector3 (x, y, 0);
 		Collider[] gem = Physics.OverlapSphere (here, 0.25f);
 		if (gem.Length > 0) {
