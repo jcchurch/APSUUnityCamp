@@ -6,58 +6,52 @@ This is a game in the style of Candy Crush or Bejeweled.
 - Create a 2D environment.
 - Go to the Asset Store and download a free icon package. I recommend 100 free alchemy icons.
 - Create a new Empty Object named “GameManager”.
-  - Start the script off with this.
+- Modify this code by adding some variables.
 
 Code.
 
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using UnityEngine;
-    using UnityEngine.UI;
-    using UnityEngine.SceneManagement;
-    
-    public class GameManager : MonoBehaviour {
-    
-        public static GameManager instance = null;
-    
-        // Use this for initialization
-        void Start () {
-                    if (instance == null)
-                    {
-                            instance = this;
-                    }
-                    else if (instance != this)
-                    {
-                            Destroy(gameObject);
-                    }               
-            }
-    
-            private void Reset() {
-                    SceneManager.LoadScene (0);
-            }
-    }
-- Modify this code by adding some variables.
-            public Generator generator;
-            public Text message;
-            public int movesLeft;
-            private int score;
-            private Gem first;
-- Set score to 0 in the `Start` method.
-    score = 0;
+  	public GameObject generator;
+	  public int movesLeft = 15;
+	  private Gem first;
+	  private int score = 0;
+
+	  public static GameManager instance = null;
+
+- Add the Start.
+
+Code.
+
+      // Use this for initialization
+      void Start () {
+  		  if (instance == null)
+	    	{
+			    instance = this;
+	    	}
+		    else if (instance != this)
+	    	{
+			    Destroy(gameObject);
+		     }
+         
+         // Add more later
+     		for (int x = -7; x <= 7; x++) {
+			    for (int y = -4; y <= 4; y++) {
+		    		Instantiate (generator, new Vector3 (x, y, 0), Quaternion.identity);
+		    	}
+	    	}
+    	}
+
 - Add a method to update the score.
 
 Code.
 
-            public void ScorePoints(int howmany) {
-                    score = score + howmany;
-                    message.text = "Score: " + score + " Moves Left: "+movesLeft;
-    
-                    if (movesLeft <= 0) {
-                            message.text = "Game over! Final Score: " + score;
-                            Invoke ("Reset", 4f);
-                    }
-            }
+	  public void ScorePoints(int howmany) {
+		  score = score + howmany;
+
+		  if (movesLeft <= 0) {
+			  Invoke ("Reset", 4f);
+		  }
+	  }
+  
 - Pull 5 different sprites into the game.
   - Give them each a different tag.
   - Give them each a **BoxCollider** (make sure it’s not a **BoxCollider2D**).
@@ -70,62 +64,66 @@ Code.
     using UnityEngine;
 
     public class Gem : MonoBehaviour {
-    
-            // Use this for initialization
-            void Start () {
-            }
-    
-            // Update is called once per frame
-            void Update () {
-            }
-    
-            private Collider getNorthGem() {
-                    return getGem(new Vector3(transform.position.x, transform.position.y + 2));
-            }
-    
-            private Collider getSouthGem() {
-                    return getGem(new Vector3(transform.position.x, transform.position.y - 2));
-            }
-    
-            private Collider getEastGem() {
-                    return getGem(new Vector3(transform.position.x - 2, transform.position.y));
-            }
-    
-            private Collider getWestGem() {
-                    return getGem(new Vector3(transform.position.x + 2, transform.position.y));
-            }
-    
-            private Collider getGem(Vector3 here) {
-                    Collider[] gem = Physics.OverlapSphere (here, 0.5f);
-                    if (gem.Length > 0) {
-                            return gem [0];
-                    }
-                    return null;
-            }
+    	private Vector3 destination;
+
+    	// Use this for initialization
+	    void Start () {
+		    destination = transform.position;
+	    }
+
+    	void OnMouseDown() {
+		    GameManager.instance.SetGem (this);
+	    }
+
+    	// Update is called once per frame
+	    void Update () {
+		    if (destination == transform.position) {
+			    CheckForCrush ();
+		    }
+
+    		transform.position = Vector3.MoveTowards (transform.position, destination, Time.deltaTime * 5);
+	    }
+
+      // Skip this.
+    	private void CheckForCrush() {
+		    float x = transform.position.x;
+		    float y = transform.position.y;
+
+    		Collider north = GetGem (x, y + 1);
+	    	Collider south = GetGem (x, y - 1);
+	    	Collider east = GetGem (x + 1, y);
+	    	Collider west = GetGem (x - 1, y);
+
+    		if (north != null && south != null && gameObject.tag == north.tag && gameObject.tag == south.tag) {
+		    	Destroy (north.gameObject);
+		    	Destroy (south.gameObject);
+		    	Destroy (gameObject);
+			    GameManager.instance.ScorePoints (100);
+		    }
+ 
+    		if (east != null && west != null && gameObject.tag == east.tag && gameObject.tag == west.tag) {
+		    	Destroy (east.gameObject);
+	    		Destroy (west.gameObject);
+			    Destroy (gameObject);
+	    		GameManager.instance.ScorePoints (100);
+		    }
+	    }
+
+      // And this
+    	private Collider GetGem(float x, float y) {
+		    Vector3 here = new Vector3 (x, y, 0);
+		    Collider[] gem = Physics.OverlapSphere (here, 0.25f);
+		    if (gem.Length > 0) {
+		    	return gem [0];
+		    }
+    		return null;
+	    }
+
+    	public void SetPosition(Vector3 here) {
+		    destination = here;
+	    }
     }
 
-- Give each Gem a speed an a destination.
-
-Code.
-
-    private float speed = 5f;
-    private Vector3 destination;
-
-- Set destination to the the current location.
-
-Code.
-
-            void Start () {
-                    destination = transform.position;
-            }
-
-- Allow the outside world to update the destination.
-
-Code.
-
-            public void SetPosition(Vector3 here) {
-                    destination = here;
-            }
 
 - Create a function for checking if anything exists below the gem.
 
@@ -200,83 +198,32 @@ Code.
     using System.Collections;
     using System.Collections.Generic;
     using UnityEngine;
-    
+
     public class Generator : MonoBehaviour {
-    
-            // Update is called once per frame
-            void Update () {
-            }
-    
-            private Collider getSouthGem() {
-                    return getGem(new Vector3(transform.position.x, transform.position.y - 2));
-            }
-    
-            private Collider getGem(Vector3 here) {
-                    Collider[] gem = Physics.OverlapSphere (here, 0.5f);
-                    if (gem.Length > 0) {
-                            return gem [0];
-                    }
-                    return null;
-            }
-    }
 
-- Modify the code to give it some gems to generate.
+    	public Gem red;
+    	public Gem black;
+    	public Gem green;
+    	public Gem blue;
+    	public Gem pink;
 
-Code.
+    	void Start() {
+	    	InvokeRepeating ("DropItem", 0, 0.5f);
+    	}
 
-     public Gem red;
-     public Gem black;
-     public Gem green;
-     public Gem blue;
-     public Gem pink;
+    	// Update is called once per frame
+	    void Update () {
+		
+    	}
 
-- Modify Update to look south. If nothing is there, place a gem.
-
-Code.
-
-    void Update() {
-        if (getSouthGem () == null) {
-            float x = transform.position.x;
-            float y = transform.position.y - 2;
-            var gemList = new List<Gem>{ red, black, green, blue, pink };
-            Instantiate(gemList[Random.Range(0,gemList.Count)], new Vector3(x, y), Quaternion.identity);
-        }
-    }
-
-- Associate your five gems with the Generator.
-- Move your Generator into the Prefabs folder.
-- Move your Generator from Prefabs into the Generator field in **GameManager**.
-- Return to **GameManager.cs**. Add this to the Update method, under the else-if statement in Start method.
-
-Code.
-
-    for (float x = -4; x <= 4; x += 2) {
-        Instantiate(generator, new Vector3(x, 5f), Quaternion.identity);
-    }
- 
-- Let’s check for gem crushes. Add this to your **Gem** code.
-    
-Code.
-    
-    private void CheckForCrush() {
-        Collider north = getNorthGem ();
-        Collider south = getSouthGem ();
-        Collider east = getEastGem ();
-        Collider west = getWestGem ();
-    
-        if (north != null && south != null && north.gameObject.tag == gameObject.tag && south.gameObject.tag == gameObject.tag) {
-            Destroy (north.gameObject);
-            Destroy (south.gameObject);
-            Destroy (gameObject);
-            GameManager.instance.ScorePoints (100);
-        }
-    
-        if (east != null && west != null && east.gameObject.tag == gameObject.tag && west.gameObject.tag == gameObject.tag) {
-            Destroy (east.gameObject);
-            Destroy (west.gameObject);
-            Destroy (gameObject);
-            GameManager.instance.ScorePoints (100);
-        }
+    	void DropItem() {
+		    Vector3 here = new Vector3 (transform.position.x, transform.position.y, 0);
+    		Collider[] gem = Physics.OverlapSphere (here, 0.25f);
+		    if (gem.Length == 0) {
+	    		var gemList = new List<Gem>{ red, black, green, blue, pink };
+			    Instantiate(gemList[Random.Range(0,gemList.Count)], here, Quaternion.identity);
+	    	}
+    	}
     }
 
 I think we are done.
