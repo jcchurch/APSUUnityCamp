@@ -20,7 +20,7 @@ public class Generator : MonoBehaviour {
 	}
 
 	void DropItem() {
-		Vector3 here = new Vector3 (transform.position.x, transform.position.y - 1, 0);
+		Vector3 here = new Vector3 (transform.position.x, transform.position.y, 0);
 		Collider[] gem = Physics.OverlapSphere (here, 0.25f);
 		if (gem.Length == 0) {
 			var gemList = new List<Gem>{ red, black, green, blue, pink };
