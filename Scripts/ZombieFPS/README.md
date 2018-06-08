@@ -43,6 +43,7 @@ Code.
 ## Create a waypoint system.
 
 - Create three sphere. They can really be empties, but we can see spheres.
+- Drag them to the prefabs.
 
 Code.
 
@@ -74,3 +75,31 @@ Code.
 
   		transform.position = Vector3.MoveTowards (transform.position, destination, speed * Time.deltaTime);
 	  }
+
+
+## The Spawner
+
+Create a new sphere for a spawner.
+
+    using System.Collections;
+    using System.Collections.Generic;
+    using UnityEngine;
+
+    public class Spawner : MonoBehaviour {
+
+	public GameObject enemy;
+
+	// Use this for initialization
+	void Start () {
+		InvokeRepeating ("Spawn", 0, 10f);
+	}
+
+	void Spawn() {
+		Instantiate (enemy, transform.position, Quaternion.identity);
+	}
+
+	// Update is called once per frame
+	void Update () {
+		
+	}
+    }
