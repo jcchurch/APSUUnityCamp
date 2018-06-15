@@ -96,7 +96,7 @@ Once this script is created, you'll need to move the "YouWin" UI Text object to 
 
 Name: MovingObstacle
 
-Notice that this has a public speed and direction variables.
+Notice that this has a public speed and direction variables. The `direction` variable specifies the starting direction of the block. 1 means that it moves in a positive Z direction. -1 means that it moves in a negative Z direction. Upon hitting -4.5 or 4.5, the object changes direction automatically.
 
     using System.Collections;
     using System.Collections.Generic;
@@ -127,3 +127,12 @@ Notice that this has a public speed and direction variables.
 
 
  Play the game to see "You Win!" appear once the goal is reached.
+
+## Add three MovingObstacle objects
+
+- Add three MovingObstacle objects. These are copies of the previous MovingObstacle object. Set their positions and starting directions.
+    - Position (1, 1, 0), Direction = -1
+    - Position (-2, 1, 0), Direction = -1
+    - Position (2, 1, 0), Direction = 1
+    
+Play the game.
