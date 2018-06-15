@@ -27,7 +27,6 @@
 - Rotation (0, 0, 0)
 - Scale (1x1x1)
 - Give it a Pink Material
-- Turn on "Is Trigger" in the Goal's Box Collider
 
 ## Create a Player
 
