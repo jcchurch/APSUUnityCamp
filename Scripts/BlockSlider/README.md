@@ -84,3 +84,47 @@ Once this script is created, you'll need to move the "YouWin" UI Text object to 
 - Give it a Brown Material
 
  Play the game to see "You Win!" appear once the goal is reached. You will not be able to pass through the StationaryObstacle.
+
+## Create a MovingObstacle.
+
+- Cube
+- Position (-1, 1, 0)
+- Rotation (0, 0, 0)
+- Scale (1x1x2)
+- Give it a Yellow Material
+
+## Create a MovingObstacle Script.
+
+Name: MovingObstacle
+
+Notice that this has a public speed and direction variables.
+
+    using System.Collections;
+    using System.Collections.Generic;
+    using UnityEngine;
+
+    public class MovingObstacle : MonoBehaviour {
+
+        public int speed = 3;
+        public int direction = 1;
+
+        // Use this for initialization
+        void Start () {
+            
+        }
+        
+        // Update is called once per frame
+        void Update () {
+            float z = direction * speed * Time.deltaTime;
+            transform.position += new Vector3 (0, 0, z);
+
+            if (transform.position.z > 4.5)
+                direction = -1;
+
+            if (transform.position.z < -4.5)
+                direction = 1;
+        }
+    }
+
+
+ Play the game to see "You Win!" appear once the goal is reached. You will not be able to pass through the StationaryObstacle.
