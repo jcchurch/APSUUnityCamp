@@ -1,0 +1,87 @@
+## Block Slider Game (3D Game)
+
+## Folderes Needed
+
+- Scripts (for all Scripts)
+- Materials (for all Material objects)
+- Prefabs (for all Prefab objects)
+
+## Create a GameBoard
+
+- Cube
+- Position (0, 0, 0)
+- Rotation (0, 0, 0)
+- Scale (10x1x10)
+- Give it a Green Material
+
+## Move the Camera
+
+- Position (0, 5, -10)
+- Rotation (28, 0, 0)
+- Scale (1x1x1)
+
+## Create a Goal
+
+- Cube
+- Position (4, 1, 0)
+- Rotation (0, 0, 0)
+- Scale (1x1x1)
+- Give it a Pink Material
+- Turn on "Is Trigger" in the Goal's Box Collider
+
+## Create a Player
+
+- Cube
+- Position (-4, 1, 0)
+- Rotation (0, 0, 0)
+- Scale (1x1x1)
+- Give it a Blue Material
+- Add a Rigidbody to the Player
+
+## Create a You Win Screen
+
+- UI Text
+- Position (0, 0, 0)
+- Width: 500
+- Height: 200
+- Text: "You Win!"
+- Color: Yellow
+- Font Size: 100
+- Once finished: Turn the YouWin UI element off so that it is hidden.
+
+## Add a Script to the Player
+
+Name: Player.cs
+
+    public int speed = 5;
+
+	  // Update is called once per frame
+	  void Update () {
+		  float x = Input.GetAxis("Horizontal") * speed * Time.deltaTime;
+		  float z = Input.GetAxis ("Vertical") * speed * Time.deltaTime;
+		  transform.position += new Vector3 (x, 0, z);
+	  }
+    
+## Add a Script to the Goal
+
+Name: Goal.cs
+
+You will have to introduce any methods from scratch not named "Start" or "Update".
+
+  	public GameObject message;
+
+  	void OnCollisionEnter(Collision other) {
+	  	message.SetActive (true);
+	  }
+
+Once this script is created, you'll need to move the "YouWin" UI Text object to the Message field in the Inspector. Play the game to see "You Win!" appear once the goal is reached.
+    
+## Create an StationaryObstacle
+
+- Cube
+- Position (0, 1, 0)
+- Rotation (0, 0, 0)
+- Scale (1x1x2)
+- Give it a Brown Material
+
+ Play the game to see "You Win!" appear once the goal is reached. You will not be able to pass through the StationaryObstacle.
