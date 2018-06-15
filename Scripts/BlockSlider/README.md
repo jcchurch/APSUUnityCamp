@@ -1,10 +1,9 @@
 ## Block Slider Game (3D Game)
 
-## Folderes Needed
+## Folders Needed
 
 - Scripts (for all Scripts)
 - Materials (for all Material objects)
-- Prefabs (for all Prefab objects)
 
 ## Create a GameBoard
 
@@ -127,4 +126,4 @@ Notice that this has a public speed and direction variables.
     }
 
 
- Play the game to see "You Win!" appear once the goal is reached. You will not be able to pass through the StationaryObstacle.
+ Play the game to see "You Win!" appear once the goal is reached.
