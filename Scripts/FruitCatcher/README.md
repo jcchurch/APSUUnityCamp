@@ -28,11 +28,11 @@ Code.
             
             // Update is called once per frame
             void Update () {
-                if (transform.position.y < -4f) {
+                if (transform.position.y < -4f)
                     Destroy(gameObject);
-                }
             }
     }
+
 - Create the Bunny.
 
 Code.
@@ -66,23 +66,17 @@ Code.
             transform.position = new Vector3(xPos, transform.position.y, transform.position.z);
     
             if (transform.position.x >= 4f)
-            {
                 direction = -1;
-            }
     
             if (transform.position.x <= -4f)
-            {
                 direction = 1;
-            }
         }
     
         private void dropSomething()
         {
             GameObject toDrop = apple;
             if (UnityEngine.Random.Range(0, 1f) < 0.5)
-            {
                 toDrop = potato;
-            }
     
             Instantiate(toDrop, transform.position, Quaternion.identity);
             Invoke("dropSomething", 3f);
@@ -104,6 +98,9 @@ Code.
     public class Player : MonoBehaviour {
     
             public float speed;
+            public int lives = 3;
+            public int points = 0;
+            public GameObject defeated;
     
             // Use this for initialization
             void Start () {
@@ -114,8 +111,24 @@ Code.
             void Update () {
                     float xPos = transform.position.x + (Input.GetAxis("Horizontal") * speed * Time.deltaTime);
             transform.position = new Vector3(Mathf.Clamp(xPos, -4f, 4f), transform.position.y, transform.position.z);
+            
+            if (lives <= 0)
+              defeated.SetVisible(true);
             }
+            
+        void OnTriggerEnter2D(Collider2D other) {
+            if (other.gameObject.tag == "Fruit")
+            {
+                points++;
+                Debug.log("Your score: "+points);
+            }
+            else if (other.gameObject.tag == "Potato")
+            {
+                lives--;
+            }
+        }
     }
+
 - Test out the game and play it.
 - Time to add the GameManager.
 
@@ -193,30 +206,6 @@ Code.
             SceneManager.LoadScene(0);
         }
     }
-    
-- Return to the Fruit Script. Modify the update function by adding one line.
-
-Code.
-
-                if (transform.position.y < -4f) {
-                    GameManager.instance.LoseLife();
-                    Destroy(gameObject);
-                }
-
-- Return to the Glove Script. Add this new method.
-
-Code.
-
-        void OnTriggerEnter2D(Collider2D other) {
-            if (other.gameObject.tag == "Fruit")
-            {
-                GameManager.instance.GainPoints(1);
-            }
-            else if (other.gameObject.tag == "Potato")
-            {
-                GameManager.instance.LoseLife();
-            }
-        }
         
 - Play the game.
 
