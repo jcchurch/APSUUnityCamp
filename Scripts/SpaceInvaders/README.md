@@ -56,9 +56,9 @@ Name: Projectile.cs
 
     public float speed = 4f;
 
-   // Update is called once per frame
+    // Update is called once per frame
 	 void Update () {
-        float y = speed * Time.deltaTime;
+         float y = speed * Time.deltaTime;
 	    	transform.position += new Vector3 (0, y, 0);
 
 	    	if (transform.position.y > 5)
