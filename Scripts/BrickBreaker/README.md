@@ -1,24 +1,72 @@
 # Breakout Game
+
 Let’s make a breakout game.
 
-- Create the boundary.
-  - 12x1x12 cube for the floor. Add a BoxCollider.
-  - 12x1x1 cube for the ceiling. Add BoxCollider.
-  - 1x10x1 cube for the left (rotated 1 degree inward) Add BoxCollider.
-  - 1x10x1 cube for the right (rotated -1 degree inward) Add BoxCollider.
-- Create the paddle.
-  - 1.5x1x1
-- Create some bricks.
-  - 0.5x0.5x0.5
-- Create an Empty Object named "Bricks" and associate all of your bricks with it.
-- Create a sphere. It's going to be our ball.
-- Make sure everything exists at position Z=0.
-- Create color materials for each game component.
-  - Floor.
-  - Walls and ceiling.
-  - Paddle
-  - Bricks (you can make more materials for the bricks, but you need at least one)
-  - Ball.
+## Floor
+
+- Cube
+- Position (0, 0, 0)
+- Rotation (0, 0, 0)
+- Scale (12, 1, 12)
+- Add a BoxCollider
+- Give it a color.
+
+## Left Wall
+
+- Cube
+- Position (-5.5, 5.5, 0)
+- Rotation (0, 0, -1)
+- Scale (1, 10, 1)
+- Add a BoxCollider
+- Give it a color.
+
+## Right Wall
+
+- Cube
+- Position (5.5, 5.5, 0)
+- Rotation (0, 0, -1)
+- Scale (1, 10, 1)
+- Add a BoxCollider
+- Give it a color.
+
+## Ceiling
+
+- Cube
+- Position (5.5, 5.5, 0)
+- Rotation (0, 0, 0)
+- Scale (12, 1, 1)
+- Add a BoxCollider
+- Give it a color.
+
+## Paddle
+
+- Cube
+- Position (0, 2, 0)
+- Rotation (0, 0, 0)
+- Scale (1.5, 1, 1)
+- Add a BoxCollider
+- Give it a color.
+
+## Bricks
+
+- Cube
+- Position (4, 10, 0)
+- Rotation (0, 0, 0)
+- Scale (0.5, 0.5, 1)
+- Give it a color.
+
+Make several bricks. At least 12. Scatter them around inside of the frame. Make sure the Z position on each is 0. The Z position on everything except for the camera should be 0.
+
+## Ball
+
+- Sphere
+- Position (0, 3, 0)
+- Rotation (0, 0, 0)
+- Scale (1, 1, 1)
+- Give it a color.
+
+## Create the Player Script
+
 - Let's program the paddle. Create a script called "Player". It's going to control the paddle.
   - Give it a public variable.
 
