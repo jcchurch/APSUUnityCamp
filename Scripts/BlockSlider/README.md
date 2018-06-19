@@ -5,6 +5,17 @@
 - Scripts (for all Scripts)
 - Materials (for all Material objects)
 
+## Create a "You Win!" Screen
+
+- UI Text
+- Position (0, 0, 0)
+- Width: 500
+- Height: 200
+- Text: "You Win!"
+- Color: Black
+- Font Size: 100
+- Once finished: Turn the YouWin UI element off so that it is hidden.
+
 ## Create a GameBoard
 
 - Cube
@@ -37,17 +48,6 @@
 - Add a Rigidbody to the Player
     - Under the Constraints, "Freeze Rotation" for X, Y, and Z.
 - Once finished, make the Camera a Child of the Player object.
-
-## Create a "You Win!" Screen
-
-- UI Text
-- Position (0, 0, 0)
-- Width: 500
-- Height: 200
-- Text: "You Win!"
-- Color: Black
-- Font Size: 100
-- Once finished: Turn the YouWin UI element off so that it is hidden.
 
 ## Add a Script to the Player
 
