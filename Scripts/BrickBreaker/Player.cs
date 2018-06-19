@@ -10,13 +10,12 @@ public class Player : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-            transform.position = new Vector3(0, -3.5f, 0);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-            float xPosition = transform.position.x + (Input.GetAxis("Horizontal") * speed * Time.deltaTime);
-            xPosition = Mathf.Clamp(xPosition, -4f, 4f);
-            transform.position = new Vector3(xPosition, playerPosition.y, playerPosition.z);
+            float x = transform.position.x + (Input.GetAxis("Horizontal") * speed * Time.deltaTime);
+            x = Mathf.Clamp(x, -4f, 4f);
+            transform.position = new Vector3(x, playerPosition.y, playerPosition.z);
         }
 }
