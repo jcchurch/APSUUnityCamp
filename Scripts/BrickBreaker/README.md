@@ -32,7 +32,7 @@ Let’s make a breakout game.
 ## Ceiling
 
 - Cube
-- Position (5.5, 5.5, 0)
+- Position (0, 11, 0)
 - Rotation (0, 0, 0)
 - Scale (12, 1, 1)
 - Add a BoxCollider
@@ -50,7 +50,7 @@ Let’s make a breakout game.
 ## Bricks
 
 - Cube
-- Position (4, 10, 0)
+- Position (-4, 10, 0)
 - Rotation (0, 0, 0)
 - Scale (0.5, 0.5, 1)
 - Give it a color.
@@ -60,7 +60,8 @@ Make several bricks. At least 12. Scatter them around inside of the frame. Make 
 ## Ball
 
 - Sphere
-- Position (0, 3, 0)
+- First, make the sphere a child of the Paddle.
+- Position (0, 1, 0)
 - Rotation (0, 0, 0)
 - Scale (1, 1, 1)
 - Give it a color.
@@ -72,202 +73,101 @@ Make several bricks. At least 12. Scatter them around inside of the frame. Make 
 
 Code.
 
-    public float speed = 100f;
-- Set the position of the paddle inside of start.
-
-Code.
-
-    void Start () {
-        transform.position = new Vector3(0, -3.5f, 0);
-    }
-- Update the position based on the keyboard presses. Make sure you spell "Horizontal" correctly.
-
-Code.
-
-    void Update () {
-        float xPosition = transform.position.x + (Input.GetAxis("Horizontal") * speed * Time.deltaTime);
-        xPosition = Mathf.Clamp(xPosition, -4.25f, 4.25f);
+    public float speed = 5f;
     
-        transform.position = new Vector3(xPosition, playerPosition.y, playerPosition.z);
+	// Update is called once per frame
+	void Update () {
+		float x = Input.GetAxis ("Horizontal") * speed * Time.deltaTime;
+		x = Mathf.Clamp (transform.position.x + x, -4.5f, 4.5f);
+		transform.position = new Vector3 (x, transform.position.y, 0);
     }
 - Test your code. Make sure the paddle moves back and forth.
-- Associate your ball with the paddle. When you move the paddle, the ball should move too.
-- Now we need to code the ball to release from the paddle. First, make some private variables.
 
-Code.
 
-    public float initialVelocity = 200f;
-    private Rigidbody rb;
-    private bool inPlay = false;
-- Create a new method called "void Awake()". Associate the Rigidbody with the rb variable.
+## Make a particle system.
 
-Code.
+Save it to prefabs.
 
-    void Awake()
+## Make a Brick class.
+
+Make a new Brick class and associate it with each Brick. Make sure that you associate your particle system with each brick too.
+
+	public Ball ball;
+
+	void OnCollisionEnter(Collision other)
     {
-        rb = GetComponent<Rigidbody>();
+		ball.Hit ();
+        Instantiate(this.particles, transform.position, Quaternion.identity);
+        Destroy(gameObject);
     }
-- Update the update method.
 
-Code.
+## Time for the Ball Script.
 
-    // Update is called once per frame
-    void Update() {
-        if (Input.GetButton("Fire1") && inPlay == false)
-        {
-            transform.parent = null;
-            inPlay = true;
-            rb.isKinematic = false;
-            rb.AddForce(new Vector3(this.initialVelocity, initialVelocity, 0));
-        }
-    }
-- Play your game. Nothing bounces! Create a new "Physic Material" with full bounce and associate it with everything in your scene (except the floor).
-- Create a new Script for the Floor. This one is going to cause the ball to disappear.
+	using System.Collections;
+	using System.Collections.Generic;
+	using UnityEngine;
+	using UnityEngine.UI;
 
-Code.
+	public class Ball : MonoBehaviour {
 
-    // Update is called once per frame
-    void OnCollisionEnter(Collision other)
-    {
-       Destroy(other);
-    }
-- Make a particle system. Save it to prefabs.
-- Make a new Brick class and associate it with each Brick. Make sure that you associate your particle system with each brick too.
+		public float speed = 1000;
 
-Code.
+		public int bricks = 12;
+		public int lives = 3;
+		public Text message;
+		public GameObject player;
 
-    using System.Collections;
-    using System.Collections.Generic;
-    using UnityEngine;
-    
-    public class Brick : MonoBehaviour {
-    
-        public GameObject particles;
-    
-            void OnCollisionEnter(Collision other)
-        {
-            Instantiate(this.particles, transform.position, Quaternion.identity);
-            Destroy(gameObject);
-        }
-    }
-- Create a text interface for the number of lives left.
-- Create a text interface for “You win!”
-- Create a text interface for “You lose!”
-- Create an empty object. Create GameManager.cs script for it. Start with this code.
+		private Rigidbody rb;
+		private bool inPlay = false;
 
-Code.
+		// Use this for initialization
+		void Start () {
+			Reset ();
+		}
 
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using UnityEngine;
-    using UnityEngine.SceneManagement;
-    using UnityEngine.UI;
-    
-    public class GameManager : MonoBehaviour {
-    
-        public static GameManager instance = null;
-        private GameObject paddle;
-        public GameObject bricksPrefab;
-    
-        // Use this for initialization
-        void Start () {        
-            if (instance == null)
-            {
-                instance = this;
-            }
-            else if (instance != this)
-            {
-                Destroy(gameObject);
-            }
-    
-            Setup();
-        }
-    
-        private void Setup()
-        {
-            clonePaddle = Instantiate(paddle, transform.position, Quaternion.identity) as GameObject;
-            Instantiate(bricksPrefab, transform.position, Quaternion.identity);
-        }
-    }
-- Make sure that you associate the paddle and the bricks with this script in the empty GameManager that you create.
-- Add some variables.
+		void Awake()
+		{
+			rb = GetComponent<Rigidbody>();
+		}
 
-Code.
+		public void Hit() {
+			bricks--;
+		}
 
-        public int lives = 3;
-        public int bricks = 12;
-        public float resetDelay = 1f;
-        public Text livesText;
-        public GameObject gameOver;
-        public GameObject youWon;
-        public GameObject bricksPrefab;
-        public GameObject paddle;
-        public GameObject deathParticles;
-- Inside the Setup method, make sure that you create the paddle and the bricks.
-- We need lots of little functions.
+		void Clear() {
+			message.text = "";
+		}
 
-This resets the scene.
+		// Update is called once per frame
+		void Update() {
+			if (Input.GetButton("Jump") && inPlay == false)
+			{
+				transform.parent = null;
+				inPlay = true;
+				rb.isKinematic = false;
+				rb.AddForce(new Vector3(speed, speed, 0));
+			}
 
-        void Reset()
-        {
-            SceneManager.LoadScene(0);
-        }
+			if (transform.position.y < 2)
+			{
+				lives--;
+				Reset ();
+			}
 
-This resets just the paddle after each ball loss.
+			if (lives == 0) 
+				message.text = "Game over!";
 
-        void SetupPaddle()
-        {
-            clonePaddle = Instantiate(paddle, transform.position, Quaternion.identity) as GameObject;
-        }
+			if (bricks == 0)
+				message.text = "You win!";
+		}
 
-Here’s our GameOver code.
+		public void Reset() {
+			inPlay = false;
+			rb.isKinematic = true;
+			message.text = "Lives: "+lives;
+			Invoke ("Clear", 3f);
 
-        void CheckGameOver()
-        {
-            if (bricks <= 0)
-            {
-                youWon.SetActive(true);
-                Invoke("Reset", resetDelay);
-            }
-    
-            if (lives <= 0)
-            {
-                gameOver.SetActive(true);
-                Invoke("Reset", resetDelay);
-            }
-        }
-
-This needs to be called when we destroy a brick.
-
-        public void DestroyBrick()
-        {
-            bricks--;
-            CheckGameOver();
-        }
-
-Here’s our code for the loss of a life.
-
-        public void LoseLife()
-        {
-            lives--;
-            livesText.text = "Lives: " + lives;
-            Instantiate(deathParticles, clonePaddle.transform.position, Quaternion.identity);
-            Destroy(clonePaddle);
-            Invoke("SetupPaddle", resetDelay);
-            CheckGameOver();
-        }
-- Now we need to throw code into the game to invoke these new method.
-- In the OnCollisionEnter in the Brick class, add this:
-
-Code.
-
-    GameManager.instance.DestroyBrick();
-- In the OnCollisionEnter in the Floor class, add this:
-
-Code.
-
-    GameManager.instance.LoseLife();
-
-At this point we should be able to play our game.
-
+			transform.position = new Vector3 (player.transform.position.x, 3, 0);
+			transform.SetParent (player.transform);
+		}
+	}
