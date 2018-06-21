@@ -1,17 +1,42 @@
 # Slender Man
 
+## Assets to download
+
 - Download the Standard Assets package.
 - Download a Night skybox.
 - Download a house package.
+
+## Make the Terrain
+
 - Make the terrain.
 - Add trees.
 - Add at least one house.
-- Change the skybox to night.
-- Add the character to the scene.
-    - Tag it as Player.
-    - Give it a flashlight.
+- Turn off the Directional Light. Don't delete it.
+- Turn off the Main Camera. Don't delete it.
+- Go to Window -> Lighting -> Settings
+    - Change the Skybox Material to nightsky1
+    - Set the Indirect Intensity to 0.05
+    - Turn on Fog
+    - Set the Fog Start to 0
+    - Set the Fog End to 100.
+
+## Add the FPSController to the scene.
+
+- Name: Player
+- Tag it as Player.
+- Give it a flashlight.
+    - Make it a child of the FirstPersonCharacter
+    - Position (0.5, 0, 0)
+    - Rotation (0, 0, 0)
+    - Scale (0, 0, 0)
+    - Spot Light
+    - Range 10
+    - Angle 30
     - Make sure that the flashlight is a little off-center.
     - Give the flashlight the flashlight cookie.
+
+## Add some variables to the Player's script.
+
 - Add some variables.
 
 Code.
@@ -47,7 +72,9 @@ Code.
 			message.text = "Caught!";
 			Invoke ("Reset", 4f);
 		}
-    
+
+## Create Pages
+
 - Create a pages. A page is a 1x0.1x1 cube.
 - Add a BoxCollider.
 - Add a point light to the center of the page.
@@ -68,7 +95,7 @@ Code.
     	// Use this for initialization
     	void Start () {
 		    float x = UnityEngine.Random.Range (100f, 400f);
-    		float y = 100;
+    		    float y = 100;
 		    float z = UnityEngine.Random.Range (100f, 400f);
 
 		    transform.position = new Vector3 (x, y, z);
@@ -126,3 +153,21 @@ Code.
     }
     
   - Enjoy your game!
+
+## Looking at the Slender?
+
+Add code to the Player
+
+    public float looking = 4f;
+
+    void OnMouseOver() {
+        looking -= Time.deltaTime;
+	
+	if (looking < 0)
+	    Captured();
+    }
+    
+    void OnMouseExit() {
+        looking = 4f;
+    }
+    
