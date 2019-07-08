@@ -8,11 +8,6 @@
 
 We are all glad that you are here!
 
-## A quick word from our sponsor.
-
-- This camp is sponsored by GOOGLE. We would like to thank them for providing the resources to make this camp possible.
-- If you enjoy this camp, consider coming to APSU, majoring in Computer Science, then applying for a job a Google.
-
 ## Who are we? 
 
 We will introduce ourselves.
