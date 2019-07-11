@@ -20,7 +20,8 @@ Brick Breaker (or Breakout) is a 3D game. I didn't make a video on this, but the
 
 ## Day 4
 
-I'll come up with a platform game.
+1. Looks like it will be our [Slender Man](Slender/README.md) game.
+
 
 ## Day 5
 
