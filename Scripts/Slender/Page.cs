@@ -34,7 +34,6 @@ public class Page : MonoBehaviour {
 	}
 }
 
-
 /*
 Page is a rigidbody with a box collider. 1x0.1x1
 */
