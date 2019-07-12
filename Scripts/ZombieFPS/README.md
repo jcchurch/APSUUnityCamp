@@ -12,14 +12,44 @@
 - Add gun to controller
 - Add ZombieRig (color version)
 - Add FPSController
+
+## Changes to the FPS Controller
+
+Make the FPS Controller taller.
+
 - Scale FPSController to 3x3x3
+
+## Changes to make the ZombiRig
+
 - Add BoxCollider objects to ZombieRig
 - Add Skeleton.
 - Add BoxCollider objects to ZombieRig
-- Create Particle System.
-- Create Enemy Script
 
-Code.
+## Create a particle system for the enemies
+
+This will be for when we want the enemies to blow up.
+
+## Create a particle system for the castle
+
+This will be for when we want the castle to blow up.
+
+## Create a script for the castle.
+
+    using System.Collections;
+    using System.Collections.Generic;
+    using UnityEngine;
+
+    public class Castle : MonoBehaviour {
+
+        public GameObject explosion;
+
+        public void Explode() {
+            Instantiate (explosion, transform.position, Quaternion.identity);
+            Destroy (gameObject);
+        }
+    }
+
+## Create the Enemy Script
 
     using System.Collections;
     using System.Collections.Generic;
@@ -27,12 +57,17 @@ Code.
 
     public class Enemy : MonoBehaviour {
 
-    	public ParticleSystem explosion;
+        public int hitpoints = 3;
+        public ParticleSystem explosion;
 
-    	void OnMouseDown() {
-		    Instantiate (explosion, transform.position, Quaternion.identity);
-	    	Destroy (gameObject);
-    	}
+        void OnMouseDown() {
+            hitpoints--;
+
+            if (hitpoints < 1) {
+                Instantiate (explosion, transform.position, Quaternion.identity);
+                Destroy (gameObject);
+            }
+        }
     }
     
 ## Create the recticle
@@ -47,34 +82,36 @@ Code.
 
 Code.
 
-  	public ParticleSystem explosion;
+    public int hitpoints = 3;
+    public ParticleSystem explosion;
     
-	  public GameObject first;
-	  public GameObject second;
+    public GameObject first;
+    public GameObject second;
     public GameObject third;
 
-  	public int speed = 5;
-	  private Vector3 destination;
+    public float speed = 5f;
+    public Castle castle;
+    private Vector3 destination;
 
-  	void Start() {
-	  	destination = first.transform.position;
-	  }
+    void Start() {
+        destination = first.transform.position;
+    }
 
-  	void Update() {
-  		if (transform.position == first.transform.position) {
-	  		destination = second.transform.position;
-		  }
+    void Update() {
+        if (transform.position == first.transform.position) {
+            destination = second.transform.position;
+        }
 
-  		if (transform.position == second.transform.position) {
-	  		destination = third.transform.position;
-		  }
+        if (transform.position == second.transform.position) {
+            destination = third.transform.position;
+        }
       
-      if (transform.position == third.transform.position) {
-		  	destination = first.transform.position;
-		  }
+        if (transform.position == third.transform.position) {
+            castle.Explode();
+        }
 
-  		transform.position = Vector3.MoveTowards (transform.position, destination, speed * Time.deltaTime);
-	  }
+        transform.position = Vector3.MoveTowards (transform.position, destination, speed * Time.deltaTime);
+      }
 
 
 ## The Spawner
@@ -87,19 +124,19 @@ Create a new sphere for a spawner.
 
     public class Spawner : MonoBehaviour {
 
-	public GameObject enemy;
+        public GameObject enemy;
 
-	// Use this for initialization
-	void Start () {
-		InvokeRepeating ("Spawn", 0, 10f);
-	}
+        // Use this for initialization
+        void Start () {
+            InvokeRepeating ("Spawn", 0, 10f);
+        }
 
-	void Spawn() {
-		Instantiate (enemy, transform.position, Quaternion.identity);
-	}
+        void Spawn() {
+            Instantiate (enemy, transform.position, Quaternion.identity);
+        }
 
-	// Update is called once per frame
-	void Update () {
-		
-	}
+        // Update is called once per frame
+        void Update () {
+            
+        }
     }
